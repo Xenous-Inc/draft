@@ -1,0 +1,12 @@
+{
+  "name": "draft",
+  "displayName": "draft",
+  "expo": {
+    "name": "draft",
+    "slug": "draft",
+    "version": "1.0.0",
+    "assetBundlePatterns": [
+      "**/*"
+    ]
+  }
+}
