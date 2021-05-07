@@ -1,14 +1,24 @@
 {
   "main": "index.js",
   "scripts": {
-    "android": "react-native run-android",
-    "ios": "react-native run-ios",
-    "web": "expo start --web",
+    "android-prod-bash": "ENVFILE=.env.prod react-native run-android",
+    "android-prod-windows": "SET ENVFILE=.env.prod && react-native run-android",
+    "android-prod-powershell": "env:ENVFILE=\".env.prod\"; react-native run-android",
+    "android-dev-bash": "ENVFILE=.env.dev react-native run-android",
+    "android-dev-windows": "SET ENVFILE=.env.dev && react-native run-android",
+    "android-dev-powershell": "env:ENVFILE=\".env.dev\"; react-native run-android",
+    "ios-prod": "ENVFILE=.env.prod react-native run-ios",
+    "ios-dev": "ENVFILE=.env.dev react-native run-ios",
     "start": "react-native start",
-    "test": "jest"
+    "test": "jest",
+    "lint": "eslint . --ext .js,.jsx,.ts,.tsx"
   },
   "dependencies": {
+    "@react-native-community/masked-view": "0.1.10",
     "@react-native-mapbox-gl/maps": "^8.2.0-beta2",
+    "@react-navigation/native": "^5.9.4",
+    "@react-navigation/stack": "^5.14.4",
+    "@reduxjs/toolkit": "^1.5.1",
     "babel-plugin-inline-dotenv": "^1.6.0",
     "expo": "~41.0.1",
     "expo-splash-screen": "~0.10.2",
@@ -18,9 +28,11 @@
     "react-native": "~0.63.4",
     "react-native-gesture-handler": "~1.10.2",
     "react-native-reanimated": "~2.1.0",
+    "react-native-safe-area-context": "3.2.0",
     "react-native-screens": "~3.0.0",
     "react-native-unimodules": "~0.13.3",
-    "react-native-web": "~0.13.12"
+    "react-native-web": "~0.13.12",
+    "redux": "^4.1.0"
   },
   "devDependencies": {
     "@babel/core": "^7.9.0",

@@ -1,19 +1,17 @@
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet } from 'react-native';
+import MapboxGL from '@react-native-mapbox-gl/maps';
+
+MapboxGL.setAccessToken(process.env.MAPBOX_PUBLIC_TOKEN || null);
 
 export default function App() {
   return (
-    <View style={styles.container}>
-      <Text>Open up App.tsx to start working on your app!</Text>
-    </View>
+    <MapboxGL.MapView styleURL={'mapbox://styles/xenous-developer/cko066lkz0sy118nsx0d2vl5a'} style={styles.container} />
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
   },
 });
