@@ -24,6 +24,7 @@
     "expo": "~41.0.1",
     "expo-splash-screen": "~0.10.2",
     "expo-updates": "~0.5.4",
+    "moti": "^0.10.1",
     "react": "16.13.1",
     "react-dom": "16.13.1",
     "react-native": "~0.63.4",
@@ -33,6 +34,7 @@
     "react-native-screens": "~3.0.0",
     "react-native-unimodules": "~0.13.3",
     "react-native-web": "~0.13.12",
+    "react-redux": "^7.2.4",
     "redux": "^4.1.0"
   },
   "devDependencies": {

@@ -1,6 +1,7 @@
-import React, { useCallback, useRef, useMemo } from 'react';
-import {StyleSheet, View, Text, Button, Pressable, Image} from 'react-native';
+import React, {useCallback, useRef, useMemo, useState} from 'react';
+import {StyleSheet, Text, Button, Pressable, Image, TextInput} from 'react-native';
 import BottomSheet, { BottomSheetFlatList } from '@gorhom/bottom-sheet';
+import { View, useAnimationState, } from 'moti'
 
 const Main = () => {
     // hooks
@@ -28,7 +29,7 @@ const Main = () => {
         },
     ];
 
-    const snapPoints = useMemo(() => [80, '90%'], []);
+    const snapPoints = useMemo(() => [90, '90%'], []);
 
     const handleSnapPress = useCallback(index => {
         sheetRef.current?.snapTo(index);
@@ -48,9 +49,38 @@ const Main = () => {
         ),
         []
     );
+
+    const animationView = useAnimationState({
+        from: {
+            opacity: 1
+        },
+        to: {
+            opacity: 0
+        },
+    })
+    const animationViewInput = useAnimationState({
+        from: {
+            scale: 1
+        },
+        to: {
+            scale: 0
+        },
+    })
+    const animationViewMain = useAnimationState({
+        from: {
+            scale: 0
+        },
+        to: {
+            scale: 1
+        },
+    })
+
+    const [height, setHeight] = useState(0);
+    const [heightMain, setHeightMain] = useState(70);
+
     return (
         <Pressable style={styles.container}>
-            <View style={styles.questionView}>
+            <View style={styles.questionView} state={animationView}>
                 <Text style={[styles.questionText, {color: '#1D2027'}]}>
                     Укажите расположение
                 </Text>
@@ -58,29 +88,39 @@ const Main = () => {
                     Норвегия
                 </Text>
             </View>
-            <View style={styles.scoreView}>
+            <View style={styles.scoreView} state={animationView}>
                 <Text style={styles.scoreText}>
                     7/10
                 </Text>
             </View>
-            <Pressable style={styles.buttonDone} onPress={() => { handleSnapPress(0) }}>
+            <View style={styles.buttonDone} onTouchEnd={() => {console.log('123'); handleSnapPress(0); animationView.transitionTo('to')}} state={animationView}>
                 <Image source={require('../images/done.png')} style={styles.imageDone}/>
-            </Pressable>
+            </View>
             <BottomSheet
                 ref={sheetRef}
                 snapPoints={snapPoints}
             >
-                <View style={{flexDirection: 'row', justifyContent: 'space-evenly', borderRadius: 35, marginBottom: 10}}>
-                    <Pressable style={styles.pressable} onPress={() => {handleClosePress()}}>
+                <View style={{flexDirection: 'row', height: heightMain, justifyContent: 'space-evenly', borderRadius: 35, marginBottom: 10}} state={animationViewMain}>
+                    <Pressable style={styles.pressable} onPress={() => {handleClosePress(); animationView.transitionTo('from')}}>
                         <Text style={styles.text}>
                             Начать
                         </Text>
                     </Pressable>
-                    <Pressable style={styles.pressable} onPress={() => {handleSnapPress(1)}}>
+                    <Pressable style={styles.pressable} onPress={() => {animationViewInput.transitionTo('from'); setHeight(70); setHeightMain(0); animationViewMain.transitionTo('from')}}>
                         <Text style={styles.text}>
                             Вступить
                         </Text>
                     </Pressable>
+                </View>
+                <View style={{height: height,  width: '100%', flexDirection: 'row', justifyContent: 'space-around'}} state={animationViewInput}>
+                    <View style={{height: height, width: '80%', alignItems: 'center'}} state={animationViewInput}>
+                        <TextInput style={{height: height, width: '95%', borderRadius: 25, backgroundColor: '#2ED184', fontSize: 20, paddingLeft: 20, color: '#ffffff'}} placeholder={'Код'}/>
+                    </View>
+                    <View style={{height: height, width: '20%', alignItems: 'center', borderRadius: 25, backgroundColor: '#2ED184', justifyContent: 'center', marginRight: 10}} state={animationViewInput}
+                          onTouchEnd={() => {setHeightMain(70); setHeight(0); animationViewInput.transitionTo('to'); animationViewMain.transitionTo('to')}}
+                    >
+                        <Image source={require('../images/done.png')} style={styles.imageDone}/>
+                    </View>
                 </View>
                 <BottomSheetFlatList
                     data={DATA}
@@ -189,3 +229,4 @@ const styles = StyleSheet.create({
 });
 
 export default Main;
+
