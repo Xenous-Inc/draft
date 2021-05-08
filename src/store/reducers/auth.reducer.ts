@@ -83,11 +83,12 @@ const authReducer = createReducer(initialState, builder => {
         })
         .addCase(SignInRequestActions.success, (state, action) => {
             state.isLoading = false;
-            state.token = action.payload.token;
+            console.log('token', action)
+            // state.token = action.payload;
         })
         .addCase(SignInRequestActions.fail, ((state, action) => {
             state.isLoading = false;
-            state.verificationRequired = action.payload.message === 'Locked';
+            state.verificationRequired = action.payload === 'Locked';
         }));
 });
 

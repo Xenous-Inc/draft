@@ -34,7 +34,7 @@ const middleware = ({ dispatch }: { dispatch: AppDispatch }) => (next: any) => (
     )
         .then(async response => {
             const data = await response.json();
-            console.log(data);
+            console.log('MIDDLEWARE', 'data', data);
             switch (response.status) {
                 case 200:
                     next({
@@ -50,7 +50,7 @@ const middleware = ({ dispatch }: { dispatch: AppDispatch }) => (next: any) => (
             }
         })
         .catch(error => {
-            console.log(error);
+            console.log('MIDDLEWARE', 'error', error);
             next({
                 type: action.type + '_FAIL',
                 payload: {message: error.toString()}

@@ -53,7 +53,7 @@ const CodeNumberInput: React.FC<ICodeNumberInputProp> = props => {
                 value={code}
                 onChangeText={text => {
                     setCode(text.replace(/[^0-9]/g, ''));
-                    onChangeValue?.(code);
+                    onChangeValue?.(text.replace(/[^0-9]/g, ''));
                 }}
                 maxLength={length}
                 keyboardType='phone-pad'
@@ -81,7 +81,7 @@ const styles = StyleSheet.create({
         marginEnd: 4,
     },
     codeKey__container: {
-        backgroundColor: colors.BACKGROUND_PRIMARY,
+        backgroundColor: colors.BACKGROUND_ACCENT,
         borderRadius: 8,
         height: 54,
         width: 52,

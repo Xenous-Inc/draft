@@ -7,7 +7,7 @@ const NameScreen = ({navigation}) => {
             <Text style={styles.text}>
                 Введите свое Имя
             </Text>
-            <TextInput style={styles.textInput}/>
+            <TextInput style={styles.content__input}/>
             <Pressable style={styles.button}
                        onPress={() => {navigation.navigate('Main')}}
             >
@@ -28,7 +28,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
     },
-    textInput: {
+    content__input: {
         backgroundColor: '#ffd2d2',
         width: 300,
         height: 80,

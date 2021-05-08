@@ -1,30 +1,29 @@
 import React from 'react';
-import NumberScreen from "./auth/NumberScreen";
+import SignInPhoneScreen from "./screens/sign_in/SignInPhoneScreen";
 import {createStackNavigator} from "@react-navigation/stack";
-import NameScreen from "./auth/NameScreen";
-import CodeScreen from "./auth/CodeScreen";
-import Main from "./main/Main";
+import NameScreen from "./screens/main/NameScreen";
+import SignInCodeScreen from "./screens/sign_in/SignInCodeScreen";
+import MainScreen from "./screens/main/MainScreen";
 import {NavigationContainer} from "@react-navigation/native";
+import {Provider} from "react-redux";
+import store from "./store";
+import LoadingScreen from "./screens/LoadingScreen";
 
 const Stack = createStackNavigator();
 
 const App = () => {
   return (
-      <NavigationContainer>
-        <Stack.Navigator initialRouteName="NumberScreen" screenOptions={{ headerShown: false }}>
-          <Stack.Screen name="NumberScreen" component={NumberScreen} />
-          <Stack.Screen name="NameScreen" component={NameScreen} />
-          <Stack.Screen name="CodeScreen" component={CodeScreen} />
-          <Stack.Screen name="Main" component={Main} />
-        </Stack.Navigator>
-      </NavigationContainer>
+      <Provider store={store}>
+          <NavigationContainer>
+              <Stack.Navigator initialRouteName="LoadingScreen" screenOptions={{ headerShown: false }}>
+                  <Stack.Screen name="LoadingScreen" component={LoadingScreen} />
+                  <Stack.Screen name="SignInPhoneScreen" component={SignInPhoneScreen} />
+                  <Stack.Screen name="NameScreen" component={NameScreen} />
+                  <Stack.Screen name="SignInCodeScreen" component={SignInCodeScreen} />
+                  <Stack.Screen name="MainScreen" component={MainScreen} />
+              </Stack.Navigator>
+          </NavigationContainer>
+      </Provider>
   );
 };
 export default App;
-
-/*
-<Button title="Snap To 90%" onPress={() => handleSnapPress(2)} />
-        <Button title="Snap To 50%" onPress={() => handleSnapPress(1)} />
-        <Button title="Snap To 25%" onPress={() => handleSnapPress(0)} />
-        <Button title="Close" onPress={() => handleClosePress()} />
- */

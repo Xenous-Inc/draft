@@ -2,7 +2,7 @@ import React, { useCallback, useRef, useMemo } from 'react';
 import {StyleSheet, View, Text, Button, Pressable, Image} from 'react-native';
 import BottomSheet, { BottomSheetFlatList } from '@gorhom/bottom-sheet';
 
-const Main = () => {
+const MainScreen = () => {
     // hooks
     const sheetRef = useRef<BottomSheet>(null);
 
@@ -41,7 +41,7 @@ const Main = () => {
     const renderItem = useCallback(
         ({ item }) => (
             <View style={styles.itemContainer}>
-                <Image style={styles.image} source={require('../images/london.png')}/>
+                <Image style={styles.image} source={require('../../images/london.png')}/>
                 <Text style={styles.itemTextName}>{item.name}</Text>
                 <Text style={styles.itemText}>{item.title}</Text>
             </View>
@@ -64,7 +64,7 @@ const Main = () => {
                 </Text>
             </View>
             <Pressable style={styles.buttonDone} onPress={() => { handleSnapPress(0) }}>
-                <Image source={require('../images/done.png')} style={styles.imageDone}/>
+                <Image source={require('../../images/done.png')} style={styles.imageDone}/>
             </Pressable>
             <BottomSheet
                 ref={sheetRef}
@@ -188,4 +188,4 @@ const styles = StyleSheet.create({
     }
 });
 
-export default Main;
+export default MainScreen;
