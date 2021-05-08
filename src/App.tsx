@@ -1,17 +1,30 @@
 import React from 'react';
-import { StyleSheet } from 'react-native';
-import MapboxGL from '@react-native-mapbox-gl/maps';
+import NumberScreen from "./auth/NumberScreen";
+import {createStackNavigator} from "@react-navigation/stack";
+import NameScreen from "./auth/NameScreen";
+import CodeScreen from "./auth/CodeScreen";
+import Main from "./main/Main";
+import {NavigationContainer} from "@react-navigation/native";
 
-MapboxGL.setAccessToken(process.env.MAPBOX_PUBLIC_TOKEN || null);
+const Stack = createStackNavigator();
 
-export default function App() {
+const App = () => {
   return (
-    <MapboxGL.MapView styleURL={'mapbox://styles/xenous-developer/cko066lkz0sy118nsx0d2vl5a'} style={styles.container} />
+      <NavigationContainer>
+        <Stack.Navigator initialRouteName="NumberScreen" screenOptions={{ headerShown: false }}>
+          <Stack.Screen name="NumberScreen" component={NumberScreen} />
+          <Stack.Screen name="NameScreen" component={NameScreen} />
+          <Stack.Screen name="CodeScreen" component={CodeScreen} />
+          <Stack.Screen name="Main" component={Main} />
+        </Stack.Navigator>
+      </NavigationContainer>
   );
-}
+};
+export default App;
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-});
+/*
+<Button title="Snap To 90%" onPress={() => handleSnapPress(2)} />
+        <Button title="Snap To 50%" onPress={() => handleSnapPress(1)} />
+        <Button title="Snap To 25%" onPress={() => handleSnapPress(0)} />
+        <Button title="Close" onPress={() => handleClosePress()} />
+ */
