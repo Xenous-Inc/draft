@@ -8,21 +8,23 @@ import {NavigationContainer} from "@react-navigation/native";
 import {Provider} from "react-redux";
 import store from "./store";
 import LoadingScreen from "./screens/LoadingScreen";
+import { SafeAreaProvider } from "react-native-safe-area-context";
 
 const Stack = createStackNavigator();
 
 const App = () => {
   return (
       <Provider store={store}>
-          <NavigationContainer>
-              <Stack.Navigator initialRouteName="LoadingScreen" screenOptions={{ headerShown: false }}>
-                  <Stack.Screen name="LoadingScreen" component={LoadingScreen} />
-                  <Stack.Screen name="SignInPhoneScreen" component={SignInPhoneScreen} />
-                  <Stack.Screen name="NameScreen" component={NameScreen} />
-                  <Stack.Screen name="SignInCodeScreen" component={SignInCodeScreen} />
-                  <Stack.Screen name="MainScreen" component={MainScreen} />
-              </Stack.Navigator>
-          </NavigationContainer>
+          <SafeAreaProvider>
+            <NavigationContainer>
+                <Stack.Navigator initialRouteName="LoadingScreen" screenOptions={{ headerShown: false }}>
+                    <Stack.Screen name="LoadingScreen" component={LoadingScreen} />
+                    <Stack.Screen name="SignInPhoneScreen" component={SignInPhoneScreen} />
+                    <Stack.Screen name="SignInCodeScreen" component={SignInCodeScreen} />
+                    <Stack.Screen name="MainScreen" component={MainScreen} />
+                </Stack.Navigator>
+            </NavigationContainer>
+          </SafeAreaProvider>
       </Provider>
   );
 };

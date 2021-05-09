@@ -2,7 +2,7 @@ import {useEffect, useState} from "react";
 import {IAuthState} from "../../store/reducers/auth.reducer";
 import {AppDispatch, RootState} from "../../store";
 import {useDispatch, useSelector} from "react-redux";
-import {SignIn, SignInAction} from "../../store/actions/auth/actions";
+import {SignIn} from "../../store/actions/auth.actions";
 
 interface IUseSignIn extends IAuthState {
     signIn: (phone: string, code: string | undefined) => void;

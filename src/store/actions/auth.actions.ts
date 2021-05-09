@@ -1,7 +1,7 @@
-import {createApiAction, createRequestedActionsContainer} from "../../tools";
-import {ISignInApiPayload, ISignInApiResponse} from "../../../api/types/auth.types";
-import {AuthActionTypes} from "../../types";
-import {AuthRests} from "../../../api/rests";
+import {createApiAction, createRequestedActionsContainer} from "../tools";
+import {ISignInApiPayload, ISignInApiResponse} from "../../api/types/auth.types";
+import {AuthActionTypes} from "../types";
+import {AuthRests} from "../../api/rests";
 
 export const SignInAction = createApiAction<ISignInApiPayload>(AuthActionTypes.signIn.raw);
 

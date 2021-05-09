@@ -1,43 +1,59 @@
-import React, { useCallback, useRef, useMemo } from 'react';
-import {StyleSheet, View, Text, Button, Pressable, Image} from 'react-native';
+import React, {useCallback, useRef, useMemo, useState, useEffect} from 'react';
+import {StyleSheet, View, Text, Pressable, Image} from 'react-native';
 import BottomSheet, { BottomSheetFlatList } from '@gorhom/bottom-sheet';
+import MapboxGL from "@react-native-mapbox-gl/maps";
+import Button from "../../components/atoms/Button";
+import Space from "../../components/atoms/Space";
+import {useGetTests} from "./MainScreen.hooks";
+
+MapboxGL.setAccessToken(process.env.MAPBOX_PUBLIC_TOKEN);
+
+const DATA = [
+    {
+        id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba',
+        name: 'Лондон (Великобритания)',
+        imageSource: 'london',
+        title: 'В прошлом Лондон носил названия Лондиниум, Августа, Лунденвик и Лунденбурх',
+    },
+    {
+        id: '3ac68afc-c605-48d3-a4f8-fbd91aa97f63',
+        name: 'Нью-Йорк (США)',
+        imageSource: 'new_york',
+        title: 'Интересен факт, что местный аэропорт Кеннеди считается наибольшим на земле. Нью-Йорк носит название танцевальной столицы мира.',
+    },
+    {
+        id: '58694a0f-3da1-471f-bd96-145571e292d72',
+        name: 'Люксембург',
+        imageSource: 'new_york',
+        title: 'Территория Люксембурга неоднократно становилась ареной борьбы между сильными европейскими государствами',
+    },
+];
 
 const MainScreen = () => {
-    // hooks
-    const sheetRef = useRef<BottomSheet>(null);
+    const [isTesting, setIsTesting] = useState(false);
+    const bottomSheetRef = useRef<BottomSheet>(null);
+    
+    const { isLoading, tests, error, get, getAll } = useGetTests();
 
-    // variables
-    const DATA = [
-        {
-            id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba',
-            name: 'Лондон (Великобритания)',
-            imageSource: 'london',
-            title: 'В прошлом Лондон носил названия Лондиниум, Августа, Лунденвик и Лунденбурх',
-        },
-        {
-            id: '3ac68afc-c605-48d3-a4f8-fbd91aa97f63',
-            name: 'Нью-Йорк (США)',
-            imageSource: 'new_york',
-            title: 'Интересен факт, что местный аэропорт Кеннеди считается наибольшим на земле. Нью-Йорк носит название танцевальной столицы мира.',
-        },
-        {
-            id: '58694a0f-3da1-471f-bd96-145571e292d72',
-            name: 'Люксембург',
-            imageSource: 'new_york',
-            title: 'Территория Люксембурга неоднократно становилась ареной борьбы между сильными европейскими государствами',
-        },
-    ];
+    const snapPoints = [68, '90%'];
 
-    const snapPoints = useMemo(() => [80, '90%'], []);
-
-    const handleSnapPress = useCallback(index => {
-        sheetRef.current?.snapTo(index);
+    const handleSnapPress = (index: number) => {
+        bottomSheetRef.current?.snapTo(index);
+    };
+    const handleClosePress = () => {
+        bottomSheetRef.current?.close();
+    };
+    
+    useEffect(() => {
+        getAll();
     }, []);
-    const handleClosePress = useCallback(() => {
-        sheetRef.current?.close();
-    }, []);
+    
+    useEffect(() => {
+        if(!isLoading && !!tests) {
+            console.log('GET ALL TESTS', tests);
+        }
+    }, [tests, isLoading])
 
-    // render
     const renderItem = useCallback(
         ({ item }) => (
             <View style={styles.itemContainer}>
@@ -48,8 +64,44 @@ const MainScreen = () => {
         ),
         []
     );
+    
     return (
-        <Pressable style={styles.container}>
+        <View style={styles.content}>
+            <MapboxGL.MapView
+                styleURL={isTesting ? 'mapbox://styles/xenous-developer/cko066lkz0sy118nsx0d2vl5a' : 'mapbox://styles/xenous-developer/ckoe4kqk43o5717qpr6tdu4u3'}
+                style={styles.content__map}
+            />
+    
+            <BottomSheet
+                ref={bottomSheetRef}
+                snapPoints={snapPoints}
+            >
+                {/*<View style={{flexDirection: 'row', justifyContent: 'space-evenly', borderRadius: 35, marginBottom: 10}}>
+                    <Pressable style={styles.pressable} onPress={() => {handleClosePress()}}>
+                        <Text style={styles.text}>
+                            Начать
+                        </Text>
+                    </Pressable>
+                    <Pressable style={styles.pressable} onPress={() => {handleSnapPress(1)}}>
+                        <Text style={styles.text}>
+                            Вступить
+                        </Text>
+                    </Pressable>
+                    <Button mode={'contained'} title={'Начать'} containerStyle={styles.sheet__button} />
+                    <Button mode={'contained'} title={'Встпуить'} containerStyle={styles.sheet__button} />
+                </View>*/}
+                <Button onPress={() => setIsTesting(!isTesting)} mode={'contained'} title={'Начать случайный тест'} containerStyle={styles.sheet__button} />
+                <Space mode={'horizontal'} size={16} />
+                {/*<Button mode={'contained'} title={'Присоединиться'} containerStyle={styles.sheet__button} />*/}
+                <BottomSheetFlatList
+                    data={DATA}
+                    keyExtractor={item => item.id}
+                    renderItem={renderItem}
+                    contentContainerStyle={styles.content__sheet}
+                />
+            </BottomSheet>
+        </View>
+        /*<Pressable style={styles.container}>
             <View style={styles.questionView}>
                 <Text style={[styles.questionText, {color: '#1D2027'}]}>
                     Укажите расположение
@@ -89,24 +141,35 @@ const MainScreen = () => {
                     contentContainerStyle={styles.contentContainer}
                 />
             </BottomSheet>
-        </Pressable>
+        </Pressable>*/
     );
 };
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor: '#d03f3f',
+    content: {
+        width: '100%',
+        height: '100%',
+    },
+    content__map: {
+        width: '100%',
+        height: '100%',
+        position: 'absolute',
+    },
+    content__sheet: {
+        justifyContent: 'center',
+        alignItems: 'center',
+        borderRadius: 48,
+        marginTop: 10,
+    },
+    sheet__button: {
+        width: '88%',
+        marginLeft: 'auto',
+        marginRight: 'auto',
     },
     image: {
         width: 350,
         height: 190,
         borderRadius: 25
-    },
-    contentContainer: {
-        alignItems: 'center',
-        borderRadius: 35,
-        marginTop: 10,
     },
     itemContainer: {
         width: 370,

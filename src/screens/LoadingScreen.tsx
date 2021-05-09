@@ -1,16 +1,21 @@
 import React, {useEffect} from 'react';
 import {View, Text, StyleSheet} from 'react-native';
+import { useIsFocused } from '@react-navigation/native';
 import colors from "../styles/colors";
 import sizes from "../styles/sizes";
 import {getToken} from "../utils/storage";
 
-const LoadingScreen = ({navigation}) => {
+const LoadingScreen = ({ navigation }) => {
+    const isFocused = useIsFocused();
     
     useEffect(() => {
-        getToken().then(token => {
-            navigation.navigate(token ? 'MainScreen' : 'SignInPhoneScreen');
-        })
-    })
+        if(isFocused) {
+            getToken().then(token => {
+                if(token) navigation.navigate('MainScreen', { token });
+                else navigation.navigate('SignInPhoneScreen');
+            });
+        }
+    }, [isFocused]);
     
     return (
         <View style={styles.content}>
